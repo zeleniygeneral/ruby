@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html><head><title>Информация о ресторане</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+.scroller { height: 600px; overflow: auto; }
+</style>
+</head>
+<body>
+    <div class='container'>
+        <div class='jumbotron'><h2>Информация о ресторане</h2></div>
+        <!-- Левый столбец -->
+        <div class='col-md-6'><div class='btn-group-vertical scroller'>
+        	<% @rest.each do |item| %>
+        		<% if item[:key] == @id %>
+        			<a href='/<%= item[:key] %>' class='btn btn-primary'><%= item[:value] %></a>
+    			<% else %>
+    				<a href='/<%= item[:key] %>' class='btn btn-default'><%= item[:value] %></a>
+				<% end %>
+			<% end %>
+        </div></div>
+        <!-- Правый столбец -->
+        <div class='col-md-6'>
+	        <% if @id.nil? %>
+	        	Выберите ресторан слева, чтобы посмотреть информацию о ресторане
+	        <% else %>
+	        <!-- ФИО Директора -->
+	        	<h3>ФИО Директора ресторана</h3>
+	        	<p><% if @dir_name.nil? %>
+	        			В выбранном ресторане директор не назначен
+	        		<% else %>
+	        			<%= @dir_name%>
+	        		<% end %>
+	        	</p>
+	        <!-- Акции проводимые в ресторане -->
+	        	<h3>Акции, проводимые в ресторане:</h3>
+	        	<ul class='list-group'>
+	        		<% if @actions.nil? %>
+	        			В выбранном ресторане нет активных акций
+					<% else %>
+			<!-- Вывод списка через итерратор -->
+						<% if @actions.kind_of?(Array) %>
+			        		<% @actions.each do | item | %>
+			        			<li class='list-group-item'><%= item[:value] %></li>
+			        		<% end %>
+			        	<% else %>
+			<!-- Вывод 1 элемента (не через массив) -->
+			        		<li class='list-group-item'><%= @actions[:value] %></li>
+		        		<% end %>
+	        		<% end %>
+	        	</ul>
+	        <% end %>
+	    </div>
+    </div>
+</body>
+</html>
